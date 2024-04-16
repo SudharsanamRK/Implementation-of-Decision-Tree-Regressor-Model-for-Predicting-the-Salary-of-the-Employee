@@ -24,49 +24,38 @@ RegisterNumber:  212222040163
 ```python
 import pandas as pd
 import matplotlib.pyplot as plt
-
 # Load the dataset
 data = pd.read_csv("/content/Salary_EX7.csv")
 data.head()
-
 # Get information about the dataset
 data.info()
-
 # Check for missing values
 data.isnull().sum()
-
 # Encode the 'Position' column
 from sklearn.preprocessing import LabelEncoder
 le = LabelEncoder()
 data["Position"] = le.fit_transform(data["Position"])
 data.head()
-
 # Select features (independent variables) and target variable (dependent variable)
 x = data[["Position", "Level"]]
 y = data["Salary"]
-
 # Split the dataset into training and testing sets
 from sklearn.model_selection import train_test_split
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=2)
-
 # Train the Decision Tree Regressor
 from sklearn.tree import DecisionTreeRegressor
 dt = DecisionTreeRegressor()
 dt.fit(x_train, y_train)
 y_pred = dt.predict(x_test)
-
 # Calculate Mean Squared Error
 from sklearn import metrics
 mse = metrics.mean_squared_error(y_test, y_pred)
 mse
-
 # Calculate R-squared score
 r2 = metrics.r2_score(y_test, y_pred)
 r2
-
 # Predict salary for given Position and Level
 dt.predict([[5, 6]])
-
 # Plot the decision tree
 plt.figure(figsize=(20, 8))
 plot_tree(dt, feature_names=x.columns, filled=True)
